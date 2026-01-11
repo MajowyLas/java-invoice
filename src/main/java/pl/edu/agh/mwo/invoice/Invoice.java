@@ -17,7 +17,7 @@ public class Invoice {
 
 
     public void addProduct(Product product) {
-        this.products.add(product);
+        this.addProduct(product,1);
     }
 
 
@@ -43,11 +43,21 @@ public class Invoice {
 
 
     public BigDecimal getTax() {
-
-           return BigDecimal.ZERO;
+        return getGrossValue().subtract(getNetValue());
     }
+
 
     public BigDecimal getGrossValue() {
-        return BigDecimal.ZERO;
+        BigDecimal netValue = BigDecimal.ZERO;
+
+        for (Product product : this.productsMap.keySet()) {
+            Integer quantity = this.productsMap.get(product);
+            BigDecimal price = product.getPriceWithTax();
+            price = price.multiply(BigDecimal.valueOf(quantity));
+            netValue = netValue.add(price);
+
+        }
+        return netValue;
     }
-}
+    }
+
