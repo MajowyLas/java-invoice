@@ -22,9 +22,9 @@ public abstract class Product {
         }
         this.price = price;
 
-        if(tax == null|| price.compareTo(BigDecimal.ZERO) < 0) {
-            throw new IllegalArgumentException("Tax percent cannot be null");
-        }
+       if(tax == null|| price.compareTo(BigDecimal.ZERO) < 0) {
+           throw new IllegalArgumentException("Tax percent cannot be null");
+       }
         this.taxPercent = tax;
     }
 

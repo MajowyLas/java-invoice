@@ -22,24 +22,34 @@ public class Invoice {
 
 
     public void addProduct(Product product, Integer quantity) {
-        this.productsMap.put(product,quantity);
+        if(product == null) {
+            throw new IllegalArgumentException("Product cannot be null");
+
+        } if (quantity <= 0) {
+            throw new IllegalArgumentException("Quantity must be greater than 0");
         }
+
+        this.productsMap.put(product,quantity);
+    }
 
 
     private Map<Product,Integer> productsMap = new HashMap<>();
 
-        public BigDecimal getNetValue() {
-            BigDecimal netValue = BigDecimal.ZERO;
+    public BigDecimal getNetValue() {
 
-            for (Product product : this.productsMap.keySet()) {
-                Integer quantity = this.productsMap.get(product);
-                BigDecimal price = product.getPrice();
-                price = price.multiply(BigDecimal.valueOf(quantity));
-                netValue = netValue.add(price);
 
-                                }
-                return netValue;
-            }
+        BigDecimal netValue = BigDecimal.ZERO;
+
+        for (Product product : this.productsMap.keySet()) {
+            Integer quantity = this.productsMap.get(product);
+            BigDecimal price = product.getPrice();
+            price = price.multiply(BigDecimal.valueOf(quantity));
+            netValue = netValue.add(price);
+
+        }return netValue;
+
+
+    }
 
 
     public BigDecimal getTax() {
@@ -58,6 +68,9 @@ public class Invoice {
 
         }
         return netValue;
+
     }
-    }
+
+
+}
 

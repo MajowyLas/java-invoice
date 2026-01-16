@@ -20,6 +20,7 @@ public class InvoiceTest {
         invoice = new Invoice();
     }
 
+
     @Test
     public void testEmptyInvoiceHasEmptySubtotal() {
         Assert.assertThat(BigDecimal.ZERO, Matchers.comparesEqualTo(invoice.getNetValue()));
