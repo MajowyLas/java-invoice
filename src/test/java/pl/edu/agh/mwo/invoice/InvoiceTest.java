@@ -184,4 +184,31 @@ public class InvoiceTest {
         Invoice invoice = new Invoice();
         invoice.printInvoice();
     }
+
+    @Test
+    public void testInvoiceMergesDuplicateProductsByName() {
+        Invoice invoice = new Invoice();
+        invoice.addProduct(new OtherProduct("Chleb", new BigDecimal("3.00")), 2);
+        invoice.addProduct(new OtherProduct("Chleb", new BigDecimal("3.00")), 3);
+        Assert.assertEquals(new BigDecimal("18.45"),
+                invoice.getGrossTotal().setScale(2, java.math.RoundingMode.HALF_UP));
+    }
+
+    @Test
+    public void testInvoiceWithDuplicateProductHasOnlyOnePosition() {
+        Invoice invoice = new Invoice();
+        invoice.addProduct(new OtherProduct("Chleb", new BigDecimal("3.00")), 2);
+        invoice.addProduct(new OtherProduct("Chleb", new BigDecimal("3.00")), 3);
+        String result = invoice.printInvoice();
+        Assert.assertTrue(result.contains("Liczba pozycji: 1"));
+    }
+
+    @Test
+    public void testInvoiceTreatsDifferentPricesAsSeparateProducts() {
+        Invoice invoice = new Invoice();
+        invoice.addProduct(new OtherProduct("Chleb", new BigDecimal("3.00")), 2);
+        invoice.addProduct(new OtherProduct("Chleb", new BigDecimal("2.50")), 3);
+        String result = invoice.printInvoice();
+        Assert.assertTrue(result.contains("Liczba pozycji: 2"));
+    }
 }

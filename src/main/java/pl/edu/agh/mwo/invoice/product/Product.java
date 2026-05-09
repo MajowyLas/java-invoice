@@ -38,4 +38,21 @@ public abstract class Product {
     public BigDecimal getPriceWithTax() {
         return price.multiply(taxPercent).add(price);
     }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null || getClass() != obj.getClass()) {
+            return false;
+        }
+        Product other = (Product) obj;
+        return name.equals(other.name) && price.compareTo(other.price) == 0;
+    }
+
+    @Override
+    public int hashCode() {
+        return java.util.Objects.hash(name, price);
+    }
 }
