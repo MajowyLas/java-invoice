@@ -148,4 +148,40 @@ public class InvoiceTest {
         Assert.assertEquals(firstCheck, secondCheck);
 
     }
+    @Test
+    public void testPrintInvoiceContainsInvoiceNumber() {
+        Invoice invoice = new Invoice();
+        invoice.addProduct(new OtherProduct("Chleb", new BigDecimal("3.00")));
+        String result = invoice.printInvoice();
+        Assert.assertTrue(result.contains("Faktura nr " + invoice.getInvoiceNumber()));
+    }
+
+
+    @Test
+    public void testPrintInvoiceContainsProductNames() {
+        Invoice invoice = new Invoice();
+        invoice.addProduct(new OtherProduct("Chleb", new BigDecimal("3.00")), 2);
+        invoice.addProduct(new DairyProduct("Mleko", new BigDecimal("4.00")), 1);
+        String result = invoice.printInvoice();
+        Assert.assertTrue(result.contains("Chleb"));
+        Assert.assertTrue(result.contains("Mleko"));
+    }
+
+
+    @Test
+    public void testPrintInvoiceEndsWithPositionCount() {
+        Invoice invoice = new Invoice();
+        invoice.addProduct(new OtherProduct("A", new BigDecimal("1.00")));
+        invoice.addProduct(new OtherProduct("B", new BigDecimal("2.00")));
+        invoice.addProduct(new DairyProduct("C", new BigDecimal("3.00")));
+        String result = invoice.printInvoice();
+        Assert.assertTrue(result.contains("Liczba pozycji: 3"));
+
+    }
+
+    @Test(expected = IllegalStateException.class)
+    public void testPrintInvoiceForEmptyInvoiceThrowsException() {
+        Invoice invoice = new Invoice();
+        invoice.printInvoice();
+    }
 }

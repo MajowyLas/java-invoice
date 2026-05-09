@@ -19,8 +19,8 @@ public class Invoice {
         nextInvoiceNumber++;
     }
 
-    public static int getInvoiceNumber() {
-        return nextInvoiceNumber;
+    public int getInvoiceNumber() {
+        return invoiceNumber;
     }
 
     public void addProduct(Product product) {
@@ -56,12 +56,27 @@ public class Invoice {
         return totalGross;
     }
 
-    public int generateInvoiceNumber() {
-        int invoiceNumber = 0;
-        for (Product product : products.keySet()) {
-            invoiceNumber = invoiceNumber + 1;
-            products.put(product, invoiceNumber);
+
+    public String printInvoice() {
+        if (products.isEmpty()) {
+            throw new IllegalStateException();
         }
-        return invoiceNumber;
+
+        StringBuilder builder = new StringBuilder();
+        builder.append("Faktura nr ").append(invoiceNumber).append("\n");
+
+        for (Product product : products.keySet()) {
+            Integer quantity = products.get(product);
+            builder.append(product.getName())
+                    .append("\t")
+                    .append(quantity)
+                    .append("\t")
+                    .append(product.getPriceWithTax())
+                    .append("\n");
+        }
+
+        builder.append("Liczba pozycji: ").append(products.size());
+        return builder.toString();
     }
+
 }
